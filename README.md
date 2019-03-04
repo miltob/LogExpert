@@ -26,7 +26,7 @@ Summary of (most) features:
 Follow the [Link](https://github.com/zarunbal/LogExpert/releases/latest) and download the latest package. Just extract it where you want and execute the application.
 
 Experimental: 
-Follow the [Link](https://github.com/miltob/LogExpert/releases/latest) and download the latest package. Just extract it where you want and execute the application.
+Follow this [Experimental version](https://github.com/miltob/LogExpert/releases/latest) and download the latest package. Just extract it where you want and execute the application.
 
 Or Install via chocolatey
 
