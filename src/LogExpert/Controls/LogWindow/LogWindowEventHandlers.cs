@@ -165,7 +165,26 @@ namespace LogExpert
 
         private void dataGridView_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
+            int startCount = CurrentColumnizer?.GetColumnCount() ?? 0;
+
             e.Value = GetCellValue(e.RowIndex, e.ColumnIndex);
+
+            // The new column could be find dynamically.
+            // Only support add new columns for now.
+            // TODO: Support reload all columns?
+            if (CurrentColumnizer != null && CurrentColumnizer.GetColumnCount() > startCount)
+            {
+                for (int i = startCount; i < CurrentColumnizer.GetColumnCount(); i++)
+                {
+                    var colName = CurrentColumnizer.GetColumnNames()[i];
+                    DataGridViewColumn titleColumn = new LogTextColumn();
+                    titleColumn.HeaderText = colName;
+                    titleColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+                    titleColumn.Resizable = DataGridViewTriState.NotSet;
+                    titleColumn.DividerWidth = 1;
+                    dataGridView.Columns.Add(titleColumn);
+                }
+            }
         }
 
         private void dataGridView_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
@@ -551,23 +570,31 @@ namespace LogExpert
 
         private void selectionChangedTrigger_Signal(object sender, EventArgs e)
         {
-            _logger.Debug("Selection changed trigger");
-            int selCount = dataGridView.SelectedRows.Count;
-            if (selCount > 1)
+            int selCount = 0;
+            try
             {
-                StatusLineText(selCount + " selected lines");
-            }
-            else
-            {
-                if (IsMultiFile)
+                _logger.Debug("Selection changed trigger");
+                selCount = dataGridView.SelectedRows.Count;
+                if (selCount > 1)
                 {
-                    MethodInvoker invoker = new MethodInvoker(DisplayCurrentFileOnStatusline);
-                    invoker.BeginInvoke(null, null);
+                    StatusLineText(selCount + " selected lines");
                 }
                 else
                 {
-                    StatusLineText("");
+                    if (IsMultiFile)
+                    {
+                        MethodInvoker invoker = new MethodInvoker(DisplayCurrentFileOnStatusline);
+                        invoker.BeginInvoke(null, null);
+                    }
+                    else
+                    {
+                        StatusLineText("");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Error in selectionChangedTrigger_Signal selcount {0}", selCount);
             }
         }
 
@@ -1458,7 +1485,7 @@ namespace LogExpert
         {
             if (_logger.IsTraceEnabled)
             {
-                _logger.Trace("Row unshared line {0}", e.Row.Cells[1].Value); 
+                _logger.Trace("Row unshared line {0}", e.Row.Cells[1].Value);
             }
         }
 
