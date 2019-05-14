@@ -10,6 +10,7 @@ using System.Security;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using LogExpert.Classes.Columnizer;
 using LogExpert.Dialogs;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -1086,7 +1087,7 @@ namespace LogExpert
                     PluginRegistry.GetInstance().RegisteredColumnizers);
                 if (columnizer == null)
                 {
-                    columnizer = PluginRegistry.GetInstance().RegisteredColumnizers[0];
+                    columnizer = ColumnizerManager.FindColumnizer(null, null);
                 }
 
                 _logger.Info("Starting external tool with sysout redirection: {0} {1}", cmd, args);

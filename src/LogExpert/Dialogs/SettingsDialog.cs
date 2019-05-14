@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
+using LogExpert.Classes.Columnizer;
 
 namespace LogExpert.Dialogs
 {
@@ -287,7 +288,7 @@ namespace LogExpert.Dialogs
                     PluginRegistry.GetInstance().RegisteredColumnizers);
                 if (columnizer == null)
                 {
-                    columnizer = PluginRegistry.GetInstance().RegisteredColumnizers[0];
+                    columnizer = ColumnizerManager.FindColumnizer(null, null);
                 }
 
                 row.Cells[1].Value = columnizer.GetName();

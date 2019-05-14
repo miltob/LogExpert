@@ -47,7 +47,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoColumnizerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,20 +61,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestData\SquareBracketColumnizerTest_01.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\SquareBracketColumnizerTest_02.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\SquareBracketColumnizerTest_03.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\SquareBracketColumnizerTest_04.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AutoColumnizer\AutoColumnizer.csproj">
       <Project>{b57259a3-4ed7-4f8b-a252-29e799a56b9e}</Project>
       <Name>AutoColumnizer</Name>
@@ -88,6 +73,9 @@
       <Project>{f0c0d370-f416-44ed-939a-b4827d15ac14}</Project>
       <Name>LogExpert</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TestData\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

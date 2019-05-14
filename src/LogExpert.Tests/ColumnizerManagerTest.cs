@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using LogExpert;
+﻿using LogExpert.Classes.Columnizer;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
-namespace AutoColumnizer.Tests
+namespace LogExpert.Tests
 {
     /// <summary>
     /// Summary description for AutoColumnizerTest
     /// </summary>
     [TestFixture]
-    public class AutoColumnizerTest
+    public class ColumnizerManagerTest
     {
         [TestCase("Square Bracket Columnizer", "30/08/2018 08:51:42.712 [TRACE]    [a] hello", "30/08/2018 08:51:42.712 [DATAIO]   [b] world", null, null, null)]
         [TestCase("Square Bracket Columnizer", "30/08/2018 08:51:42.712 [TRACE]     hello", "30/08/2018 08:51:42.712 [DATAIO][]    world", null, null, null)]
@@ -19,7 +19,6 @@ namespace AutoColumnizer.Tests
         [TestCase("Timestamp Columnizer", "30/08/2018 08:51:42.712 no bracket 1", "30/08/2018 08:51:42.712 no bracket 2", "30/08/2018 08:51:42.712 [TRACE]    with bracket 1", "30/08/2018 08:51:42.712 [TRACE]    with bracket 2", "no bracket 3")]
         public void FindColumnizer_ReturnCorrectColumnizer(string expectedColumnizerName, string line0, string line1, string line2, string line3, string line4)
         {
-            LogExpert.AutoColumnizer autoColumnizer = new LogExpert.AutoColumnizer();
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test");
 
             Mock<IAutoLogLineColumnizerCallback> autoLogLineColumnizerCallbackMock = new Mock<IAutoLogLineColumnizerCallback>();
@@ -53,14 +52,7 @@ namespace AutoColumnizer.Tests
                 LineNumber = 4
             });
 
-            autoLogLineColumnizerCallbackMock.Setup(a => a.GetRegisteredColumnizers()).Returns(new List<ILogLineColumnizer>(new ILogLineColumnizer[]
-            {
-                new SquareBracketColumnizer(0, false),
-                new ClfColumnizer(),
-                new TimestampColumnizer(),
-            }));
-
-            var result = autoColumnizer.FindColumnizer(path, autoLogLineColumnizerCallbackMock.Object);
+            var result = ColumnizerManager.FindColumnizer(path, autoLogLineColumnizerCallbackMock.Object);
 
             Assert.AreEqual(expectedColumnizerName, result.GetName());
         }
